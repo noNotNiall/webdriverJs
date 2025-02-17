@@ -5,6 +5,11 @@
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
+      "forceConsistentCasingInFileNames": true,
+      "baseUrl": ".",
+      "paths": {
+        "src/*": ["src/*"], // Alias for the src directory
+        "test/*": ["test/*"] // Alias for the test directory
+      }
     }
   }

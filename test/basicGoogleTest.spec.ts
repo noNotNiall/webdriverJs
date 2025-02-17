@@ -1,6 +1,6 @@
-import { WebDriver } from 'selenium-webdriver';
-import EndToEndApp from '../src/EndToEndApp';
-import GooglePage from '../src/pageObjects/GooglePage';
+import EndToEndApp from "src/EndToEndApp";
+import GooglePage from "src/pageObjects/GooglePage";
+
 
 describe('Google Search', () => {
   let app: EndToEndApp;
