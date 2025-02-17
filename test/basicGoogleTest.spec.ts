@@ -1,58 +1,28 @@
-import { Builder, By, until, WebDriver, logging } from 'selenium-webdriver';
-import * as chrome from 'selenium-webdriver/chrome';
+import { WebDriver } from 'selenium-webdriver';
+import EndToEndApp from '../src/EndToEndApp';
+import GooglePage from '../src/pageObjects/GooglePage';
 
 describe('Google Search', () => {
-  let driver: WebDriver;
+  let app: EndToEndApp;
 
   beforeAll(async () => {
-    // Configure logging preferences
-    const prefs = new logging.Preferences();
-    prefs.setLevel(logging.Type.BROWSER, logging.Level.ALL);
-    prefs.setLevel(logging.Type.DRIVER, logging.Level.ALL);
-
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(new chrome.Options())
-      .setLoggingPrefs(prefs)
-      .build();
+    app = new EndToEndApp();
   });
 
   afterAll(async () => {
-    await driver.quit();
+    await app.quitDriver();
   });
 
-  test('should navigate to Google and validate the title', async () => {
-    // Navigate to Google
+  test('Should navigate to Google and validate the title', async () => {
+    const googlePage  = new GooglePage(await app.getDriver());
     console.log('Navigating to Google');
-    await driver.get('https://www.google.com');
+    await googlePage.open();
+    await googlePage.waitForTitleToContain('Google');
+    expect(await (await app.getDriver()).getTitle()).toContain('Google');
+    await googlePage.searchStringAndSubmit('WebDriver');
+    await googlePage.waitForTitleToContain('WebDriver');
 
-    // Wait for the title to be present
-    console.log('Waiting for the title to contain "Google"');
-    await driver.wait(until.titleContains('Google'), 1000);
-
-    // Check if the reject-all button is present
-    const rejectAllButtonLocator = await driver.findElements(By.xpath(`//div[text()='Reject all']/..`)); // Safe way to search for element
-    if (rejectAllButtonLocator.length > 0) await rejectAllButtonLocator[0].click();
-
-    // Find the search box element and interact with it
-    console.log('Finding the search box element');
-    const searchBox = await driver.findElement(By.name('q'));
-    await driver.wait(until.elementIsEnabled(searchBox), 1000);
-    console.log('Typing "WebDriver" into the search box');
-    await searchBox.click();
-    await searchBox.sendKeys('WebDriver');
-
-    // Submit the search form
-    console.log('Submitting the search form');
-    await searchBox.submit();
-
-    // Wait for the results page to load and display the results
-    console.log('Waiting for the results page to load');
-    await driver.wait(until.titleContains('WebDriver'), 1000);
-
-    // Validate the title contains 'WebDriver'
     console.log('Validating the title contains "WebDriver"');
-    const title = await driver.getTitle();
-    expect(title).toContain('WebDriver');
+    expect(await googlePage.getTitle()).toContain('WebDriver');
   });
 });
