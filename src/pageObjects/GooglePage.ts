@@ -1,5 +1,8 @@
 import { WebDriver, By, until, WebElement } from 'selenium-webdriver';
 
+/**
+ * Page object for the Google homepage
+ */
 class GooglePage {
     private driver: WebDriver;
     private url: string = 'https://www.google.com';

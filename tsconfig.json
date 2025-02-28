@@ -7,9 +7,11 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "baseUrl": ".",
+      "sourceMap": true,
       "paths": {
         "src/*": ["src/*"], // Alias for the src directory
         "test/*": ["test/*"] // Alias for the test directory
-      }
+      },
+      "noImplicitAny": false
     }
   }
