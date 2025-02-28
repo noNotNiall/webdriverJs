@@ -55,3 +55,6 @@ build/
 
 # Selenium WebDriver specific files
 selenium-debug.log
+
+# Generated video files
+video/
